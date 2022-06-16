@@ -1,0 +1,12 @@
+{
+  "users": {
+    "standard": {
+      "userName": "qa-prod1@gymondo.de",
+      "password": "purpleSquid22!"
+    },
+    "invalid": {
+      "userName": "rahul@onboardingtest.com",
+      "password": "secret_password"
+    }
+  }
+}

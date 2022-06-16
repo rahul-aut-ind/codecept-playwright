@@ -1,0 +1,32 @@
+{
+  "name": "codecept-playwright",
+  "version": "1.0.0",
+  "description": "POC with codecept-playwright",
+  "main": "index.js",
+  "scripts": {
+    "test": "npx codeceptjs run --reporter mochawesome"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rahul-aut-ind/codecept-playwright.git"
+  },
+  "keywords": [
+    "Playwright",
+    "CodeceptJS",
+    "POC"
+  ],
+  "author": "Rahul Upadhyay",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/rahul-aut-ind/codecept-playwright/issues"
+  },
+  "homepage": "https://github.com/rahul-aut-ind/codecept-playwright#readme",
+  "dependencies": {
+    "codeceptjs": "^3.3.3",
+    "mochawesome": "^7.1.3",
+    "playwright": "^1.22.2"
+  },
+  "devDependencies": {
+    "mocha": "^10.0.0"
+  }
+}
