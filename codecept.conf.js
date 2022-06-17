@@ -29,6 +29,7 @@ exports.config = {
   include: {
     I: "./utility.js",
     landingPage: "./model/pages/landingPage.js",
+    myPlanPage: "./model/pages/myPlanPage.js",
     testData: "./config/testData.json",
   },
   mocha: {
