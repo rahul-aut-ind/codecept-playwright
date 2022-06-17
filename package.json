@@ -4,7 +4,8 @@
   "description": "POC with codecept-playwright",
   "main": "index.js",
   "scripts": {
-    "test": "npx codeceptjs run --reporter mochawesome"
+    "test": "npx codeceptjs run --steps --reporter mochawesome",
+    "stepsTest": "npx codeceptjs run --steps"
   },
   "repository": {
     "type": "git",

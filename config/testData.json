@@ -2,7 +2,10 @@
   "users": {
     "standard": {
       "userName": "qa-prod1@gymondo.de",
-      "password": "purpleSquid22!"
+      "password": "purpleSquid22!",
+      "name": "Test1",
+      "planName": "Fat Burner Beginner",
+      "activeColor": "rgb(255, 127, 102)"
     },
     "invalid": {
       "userName": "rahul@onboardingtest.com",

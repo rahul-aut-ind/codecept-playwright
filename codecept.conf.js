@@ -20,7 +20,7 @@ exports.config = {
       //uniqueScreenshotNames: true,
       waitForAction: 200,
       restart: false,
-      trace: true,
+      trace: false,
     },
     Mochawesome: {
       uniqueScreenshotNames: "true",
@@ -42,4 +42,10 @@ exports.config = {
   },
   bootstrap: null,
   name: "codecept-playwright",
+  plugins: {
+    retryFailedStep: {
+      enabled: true,
+      retries: 2,
+    },
+  },
 };

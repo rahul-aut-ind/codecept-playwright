@@ -1,9 +1,13 @@
-Feature("Login to Gymondo");
+Feature("Login to Gymondo | @Sanity");
 
-Scenario.skip(
-  "Launch WebApp & Login with improper credentials",
+Before(({ I }) => {
+  I.amOnPage("");
+  I.say("Opening Landing Page");
+});
+
+Scenario(
+  "Launch WebApp & Login with improper credentials | @Negative",
   ({ I, testData, landingPage }) => {
-    I.amOnPage("");
     landingPage.loginWithEmail(
       testData.users.standard.userName,
       testData.users.invalid.password
@@ -14,10 +18,9 @@ Scenario.skip(
     );
   }
 ),
-  Scenario.skip(
-    "Launch WebApp & Login with invalid credentials",
+  Scenario(
+    "Launch WebApp & Login with invalid credentials | @Negative",
     ({ I, testData, landingPage }) => {
-      I.amOnPage("");
       landingPage.loginWithEmail(
         testData.users.invalid.userName,
         testData.users.invalid.password
@@ -29,9 +32,8 @@ Scenario.skip(
     }
   ),
   Scenario(
-    "Launch WebApp & Login with standard credentials",
+    "Launch WebApp & Login with standard credentials | @HappyPath",
     ({ I, testData, landingPage, myPlanPage }) => {
-      I.amOnPage("");
       landingPage.loginWithEmail(
         testData.users.standard.userName,
         testData.users.standard.password
@@ -40,6 +42,5 @@ Scenario.skip(
       I.seeInCurrentUrl("/train/timeline");
       myPlanPage.dismissWeeklyTargetModal();
       I.seeElement(myPlanPage.fields.top_menu);
-      I.see("Test1");
     }
   );
