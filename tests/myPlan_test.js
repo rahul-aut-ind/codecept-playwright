@@ -30,12 +30,17 @@ Scenario(
     );
 
     I.say("Enrolled Plan & Days validations");
-    var planName = await myPlanPage.verifyNameOfEnrolledProgram();
-    assert.strictEqual(planName, testData.users.standard.planName);
+    assert.strictEqual(
+      await myPlanPage.verifyNameOfEnrolledProgram(),
+      testData.users.standard.planName
+    );
     I.seeElement(myPlanPage.fields.calendar_days);
     myPlanPage.verifyNumberOfCalendarDaysDisplayed();
     I.seeElement(myPlanPage.fields.progress_circle);
     I.seeElement(myPlanPage.fields.progress_circle_content);
-    //const result = await tryTo(() => I.see('Welcome'));
+    //const result = await tryTo(() => I.see(testData.users.standard.name));
+
+    myPlanPage.verifyPlanSettings(testData.users.standard.planName);
+    myPlanPage.verifyPlanTimeline(testData.users.standard.apiCompleted);
   }
 );

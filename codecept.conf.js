@@ -18,7 +18,7 @@ exports.config = {
       waitForNavigation: "networkidle0",
       timeout: 60000,
       //uniqueScreenshotNames: true,
-      waitForAction: 200,
+      waitForAction: 500,
       restart: false,
       trace: false,
     },
@@ -45,7 +45,7 @@ exports.config = {
   plugins: {
     retryFailedStep: {
       enabled: true,
-      retries: 2,
+      retries: 1,
     },
   },
 };
