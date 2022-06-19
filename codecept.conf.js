@@ -21,6 +21,7 @@ exports.config = {
       waitForAction: 500,
       restart: true,
       trace: false,
+      video: true,
     },
     Mochawesome: {
       uniqueScreenshotNames: "true",

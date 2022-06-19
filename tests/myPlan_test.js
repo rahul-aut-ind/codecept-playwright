@@ -35,6 +35,7 @@ Scenario(
 
     I.scrollPageToBottom();
     I.see("Your recipe suggestions for today");
+    await myPlanPage.verifyRecipeSuggestionsDisplayed();
     I.see("OPEN NUTRITION PLAN", myPlanPage.fields.nutrition_plan);
     I.scrollPageToTop();
 
@@ -62,5 +63,15 @@ Scenario(
         testData.users.standard.apiCompleted,
         "Resume"
       );
+    }
+  ),
+  Scenario(
+    "MyPlan | Video Player Works | @Update",
+    async ({ I, testData, myPlanPage }) => {
+      I.say("Resuming the current plan if Plan is not active");
+      await myPlanPage.changePlanSettings("Resume");
+
+      myPlanPage.checkWorkoutVideoPlayback();
+      myPlanPage.closeVideoModal();
     }
   );

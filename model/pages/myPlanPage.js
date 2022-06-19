@@ -21,11 +21,17 @@ module.exports = {
     timeline_upcoming_noData: { css: "[class*='timeline-modal_noDataTitle']" },
     timeline_completed_days: { css: "[class*='timeline-modal_dayTitle']" },
     nutrition_plan: { css: "button[class*='nutrition_button']" },
+    recipe_suggestions: { css: "[data-label='recipe_suggestion']" },
     plan_status_action: { css: "[class*='plan-settings-modal_button'] div" },
     plan_settings_action_button: {
       css: "[data-action*='training_program_settings']",
     },
     workout_card_images: { css: "[class*='workout-card_backgroundImage']" },
+    workout_video_duration: { css: "[class*='workout-card_duration']" },
+    modal_video: { css: "[class*='video-player-modal']" },
+    video_player: { css: "video[src]" },
+    paused_banner: { css: "[class*='content_pausedBanner']" },
+    day_view: { css: "[class*='day-view']" },
   },
 
   dismissWeeklyTargetModal() {
@@ -47,6 +53,26 @@ module.exports = {
       this.NUMBER_OF_CALENDAR_DAYS_TO_SHOW
     );
   },
+
+  async verifyRecipeSuggestionsDisplayed() {
+    var recipeSuggestions = await I.grabNumberOfVisibleElements(
+      this.fields.recipe_suggestions
+    );
+    I.say("Got " + recipeSuggestions + " recipe suggestions!!", "blue");
+    assert.ok(recipeSuggestions > 0);
+  },
+
+  checkWorkoutVideoPlayback() {
+    I.click(this.fields.workout_video_duration);
+    I.waitForElement(this.fields.modal_video, 5);
+    I.seeElement(this.fields.video_player);
+    I.say("Workout video working fine");
+  },
+
+  closeVideoModal() {
+    this.closeModal(this.fields.modal_video);
+  },
+
   async verifyNameOfEnrolledProgram(planName) {
     var currentPlanName = await I.grabTextFrom(this.fields.program_name);
     assert.strictEqual(currentPlanName, planName);
@@ -138,12 +164,15 @@ module.exports = {
           I.waitForElement(this.fields.plan_settings_action_button, 2);
           I.click("Pause program", this.fields.plan_settings_action_button);
           I.waitForInvisible(this.fields.modal_plan_settings, 5);
+          I.waitForVisible(this.fields.paused_banner, 10);
         }
         break;
       case "RESUME":
         if ((await this.getPlanStatus()) === "Paused") {
           I.click(locate(this.fields.plan_status_action).first());
           I.waitForInvisible(this.fields.modal_plan_settings, 5);
+          I.waitForInvisible(this.fields.paused_banner, 10);
+          I.waitForVisible(this.fields.day_view, 10);
         } else {
           this.closeModal(this.fields.modal_plan_settings);
         }

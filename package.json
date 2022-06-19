@@ -6,7 +6,7 @@
   "scripts": {
     "pretest": "clear && rm -rf output",
     "test": "npx codeceptjs run --steps --reporter mochawesome",
-    "stepsTest": "npx codeceptjs run --steps"
+    "debug": "clear && rm -rf output && npx codeceptjs run --steps ./tests/myPlan_test.js"
   },
   "repository": {
     "type": "git",
