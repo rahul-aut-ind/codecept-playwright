@@ -16,10 +16,10 @@ exports.config = {
       show: true,
       browser: "chromium",
       waitForNavigation: "networkidle0",
-      timeout: 60000,
+      timeout: 30000,
       //uniqueScreenshotNames: true,
       waitForAction: 500,
-      restart: false,
+      restart: true,
       trace: false,
     },
     Mochawesome: {
@@ -44,8 +44,11 @@ exports.config = {
   name: "codecept-playwright",
   plugins: {
     retryFailedStep: {
-      enabled: true,
+      enabled: false,
       retries: 1,
+    },
+    retryTo: {
+      enabled: false,
     },
   },
 };

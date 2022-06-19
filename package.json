@@ -4,6 +4,7 @@
   "description": "POC with codecept-playwright",
   "main": "index.js",
   "scripts": {
+    "pretest": "clear && rm -rf output",
     "test": "npx codeceptjs run --steps --reporter mochawesome",
     "stepsTest": "npx codeceptjs run --steps"
   },

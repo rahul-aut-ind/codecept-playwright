@@ -1,8 +1,6 @@
 Feature("My Plan Page Validations | @Sanity");
 
-const assert = require("assert");
-
-Before(({ I, testData, landingPage }) => {
+Before(({ I, testData, landingPage, myPlanPage }) => {
   I.amOnPage("");
   I.say("Logging In to Application with Standard User");
   landingPage.loginWithEmail(
@@ -10,28 +8,23 @@ Before(({ I, testData, landingPage }) => {
     testData.users.standard.password
   );
   I.waitForNavigation();
+  I.seeInCurrentUrl("/train/timeline");
   I.say("Logged In successfully");
+  myPlanPage.dismissWeeklyTargetModal();
 });
 
 Scenario(
-  "MyPlan Page Top Section validations | @HappyPath",
+  "MyPlan | Page validations | @HappyPath",
   async ({ I, testData, myPlanPage }) => {
-    I.seeInCurrentUrl("/train/timeline");
-    I.say("Dismissing Modal Popup");
-    myPlanPage.dismissWeeklyTargetModal();
-
     I.say("Top menu Validations");
     I.seeElement(myPlanPage.fields.top_menu);
     I.see(testData.users.standard.name);
-    var colorOfActiveTopMenu = await myPlanPage.colorOfSelectedTab();
-    assert.strictEqual(
-      colorOfActiveTopMenu,
+    await myPlanPage.verifyColorOfSelectedTab(
       testData.users.standard.activeColor
     );
 
     I.say("Enrolled Plan & Days validations");
-    assert.strictEqual(
-      await myPlanPage.verifyNameOfEnrolledProgram(),
+    await myPlanPage.verifyNameOfEnrolledProgram(
       testData.users.standard.planName
     );
     I.seeElement(myPlanPage.fields.calendar_days);
@@ -40,7 +33,34 @@ Scenario(
     I.seeElement(myPlanPage.fields.progress_circle_content);
     //const result = await tryTo(() => I.see(testData.users.standard.name));
 
+    I.scrollPageToBottom();
+    I.see("Your recipe suggestions for today");
+    I.see("OPEN NUTRITION PLAN", myPlanPage.fields.nutrition_plan);
+    I.scrollPageToTop();
+
     myPlanPage.verifyPlanSettings(testData.users.standard.planName);
-    myPlanPage.verifyPlanTimeline(testData.users.standard.apiCompleted);
+    await myPlanPage.verifyPlanTimelineElements(
+      testData.users.standard.activeColor
+    );
   }
-);
+),
+  Scenario(
+    "MyPlan | Plan status validations | @Update",
+    async ({ I, testData, myPlanPage }) => {
+      I.say("Pausing the current plan & validating timeline");
+      await myPlanPage.changePlanSettings("Pause");
+      await myPlanPage.verifyPlanTimeline(
+        testData.users.standard.apiUpcoming,
+        testData.users.standard.apiCompleted,
+        "Pause"
+      );
+
+      I.say("Resuming the current plan & validating timeline");
+      await myPlanPage.changePlanSettings("Resume");
+      await myPlanPage.verifyPlanTimeline(
+        testData.users.standard.apiUpcoming,
+        testData.users.standard.apiCompleted,
+        "Resume"
+      );
+    }
+  );
