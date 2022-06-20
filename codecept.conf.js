@@ -14,7 +14,8 @@ exports.config = {
     Playwright: {
       url: "https://www.gymondo.com/en/",
       show: true,
-      browser: "chromium",
+      //browser: "chromium",
+      channel: "chrome",
       waitForNavigation: "networkidle0",
       timeout: 30000,
       //uniqueScreenshotNames: true,

@@ -3,6 +3,7 @@ const assert = require("assert");
 
 module.exports = {
   NUMBER_OF_CALENDAR_DAYS_TO_SHOW: 7,
+  WAIT_IN_SECS_FOR_ELEMENT: 5,
   // locators
   fields: {
     top_menu: ".top-nav__list",
@@ -35,7 +36,10 @@ module.exports = {
   },
 
   dismissWeeklyTargetModal() {
-    I.waitForElement(this.fields.modal_weekly_target, 5);
+    I.waitForElement(
+      this.fields.modal_weekly_target,
+      this.WAIT_IN_SECS_FOR_ELEMENT
+    );
     this.closeModal(this.fields.modal_weekly_target);
   },
 
@@ -58,15 +62,16 @@ module.exports = {
     var recipeSuggestions = await I.grabNumberOfVisibleElements(
       this.fields.recipe_suggestions
     );
-    I.say("Got " + recipeSuggestions + " recipe suggestions!!", "blue");
+    I.say("Got " + recipeSuggestions + " recipe suggestions!!", "yellow");
     assert.ok(recipeSuggestions > 0);
   },
 
   checkWorkoutVideoPlayback() {
     I.click(this.fields.workout_video_duration);
-    I.waitForElement(this.fields.modal_video, 5);
+    I.waitForElement(this.fields.modal_video, this.WAIT_IN_SECS_FOR_ELEMENT);
+    I.waitForElement(this.fields.video_player, this.WAIT_IN_SECS_FOR_ELEMENT);
     I.seeElement(this.fields.video_player);
-    I.say("Workout video working fine");
+    I.say("Workout video working fine", "green");
   },
 
   closeVideoModal() {
@@ -81,7 +86,7 @@ module.exports = {
   async verifyPlanTimelineElements(activeColor) {
     I.seeElement(this.fields.plan_timeline);
     I.click(this.fields.plan_timeline);
-    I.waitForElement(this.fields.modal_timeline, 5);
+    I.waitForElement(this.fields.modal_timeline, this.WAIT_IN_SECS_FOR_ELEMENT);
 
     I.see("Upcoming");
     var colorOfUpcomingTab = await I.grabCssPropertyFrom(
@@ -105,7 +110,10 @@ module.exports = {
   verifyPlanSettings(planName) {
     I.seeElement(this.fields.plan_settings);
     I.click(this.fields.plan_settings);
-    I.waitForElement(this.fields.modal_plan_settings, 5);
+    I.waitForElement(
+      this.fields.modal_plan_settings,
+      this.WAIT_IN_SECS_FOR_ELEMENT
+    );
     I.see(planName);
     this.closeModal(this.fields.modal_plan_settings);
   },
@@ -113,7 +121,7 @@ module.exports = {
   async verifyPlanTimeline(apiUpcoming, apiCompleted, planStatus) {
     I.seeElement(this.fields.plan_timeline);
     I.click(this.fields.plan_timeline);
-    I.waitForElement(this.fields.modal_timeline, 5);
+    I.waitForElement(this.fields.modal_timeline, this.WAIT_IN_SECS_FOR_ELEMENT);
 
     I.see("Upcoming");
     if (planStatus.toString().toUpperCase() === "PAUSE") {
@@ -122,12 +130,12 @@ module.exports = {
     } else {
       // I.waitForResponse(
       //   (response) => response.url() === apiUpcoming && response.status() === 200,
-      //   2
+      //   this.WAIT_IN_SECS_FOR_ELEMENT
       // );
       var upcomingWorkouts = await I.grabNumberOfVisibleElements(
         this.fields.workout_card_images
       );
-      I.say("Got " + upcomingWorkouts + " workouts in Upcoming!!", "blue");
+      I.say("Got " + upcomingWorkouts + " workouts in Upcoming!!", "yellow");
       assert.ok(upcomingWorkouts > 0);
     }
 
@@ -138,43 +146,69 @@ module.exports = {
     // I.waitForResponse(
     //   (response) =>
     //     response.url() === apiCompleted && response.status() === 200,
-    //   5
+    //   this.WAIT_IN_SECS_FOR_ELEMENT
     // );
     I.waitForElement(this.fields.timeline_completed_days, 5);
     var daysCompletedTimeline = await I.grabNumberOfVisibleElements(
       this.fields.timeline_completed_days
     );
-    I.say("Got " + daysCompletedTimeline + " days in Completed!!", "blue");
+    I.say("Got " + daysCompletedTimeline + " days in Completed!!", "yellow");
     assert.ok(daysCompletedTimeline > 0);
 
     this.closeModal(this.fields.modal_timeline);
   },
 
   async changePlanSettings(actionType) {
+    I.say("Trying to change Current Plan to " + actionType, "yellow");
     I.seeElement(this.fields.plan_settings);
     I.click(this.fields.plan_settings);
-    I.waitForElement(this.fields.modal_plan_settings, 5);
+    I.waitForElement(
+      this.fields.modal_plan_settings,
+      this.WAIT_IN_SECS_FOR_ELEMENT
+    );
 
     switch (actionType.toString().toUpperCase()) {
       case "PAUSE":
         if ((await this.getPlanStatus()) === "Paused") {
           this.closeModal(this.fields.modal_plan_settings);
+          I.say("Current Plan - Already Paused", "yellow");
         } else {
           I.click(locate(this.fields.plan_status_action).first());
-          I.waitForElement(this.fields.plan_settings_action_button, 2);
+          I.waitForElement(
+            this.fields.plan_settings_action_button,
+            this.WAIT_IN_SECS_FOR_ELEMENT
+          );
           I.click("Pause program", this.fields.plan_settings_action_button);
-          I.waitForInvisible(this.fields.modal_plan_settings, 5);
-          I.waitForVisible(this.fields.paused_banner, 10);
+          I.waitForInvisible(
+            this.fields.modal_plan_settings,
+            this.WAIT_IN_SECS_FOR_ELEMENT
+          );
+          I.waitForVisible(
+            this.fields.paused_banner,
+            2 * this.WAIT_IN_SECS_FOR_ELEMENT
+          );
+          I.say("Current Plan - Paused", "yellow");
         }
         break;
       case "RESUME":
         if ((await this.getPlanStatus()) === "Paused") {
           I.click(locate(this.fields.plan_status_action).first());
-          I.waitForInvisible(this.fields.modal_plan_settings, 5);
-          I.waitForInvisible(this.fields.paused_banner, 10);
-          I.waitForVisible(this.fields.day_view, 10);
+          I.waitForInvisible(
+            this.fields.modal_plan_settings,
+            this.WAIT_IN_SECS_FOR_ELEMENT
+          );
+          I.waitForInvisible(
+            this.fields.paused_banner,
+            2 * this.WAIT_IN_SECS_FOR_ELEMENT
+          );
+          I.waitForVisible(
+            this.fields.day_view,
+            2 * this.WAIT_IN_SECS_FOR_ELEMENT
+          );
+          I.say("Current Plan - Active", "yellow");
         } else {
           this.closeModal(this.fields.modal_plan_settings);
+          I.say("Current Plan - Already Active", "yellow");
         }
         break;
     }
@@ -185,13 +219,13 @@ module.exports = {
       locate(this.fields.plan_status_action).first()
     );
     if (planStatusAction.includes("PAUSE")) planStatusAction = "Paused";
-    else planStatusAction = "ACTIVE";
-    I.say("Current plan status action is " + planStatusAction, "blue");
+    else planStatusAction = "Active";
+    I.say("Current plan status is " + planStatusAction, "yellow");
     return planStatusAction;
   },
 
   closeModal(modalName) {
     I.click(this.fields.modal_close);
-    I.waitForInvisible(modalName, 5);
+    I.waitForInvisible(modalName, this.WAIT_IN_SECS_FOR_ELEMENT);
   },
 };
