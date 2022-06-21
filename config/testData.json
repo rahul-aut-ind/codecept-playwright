@@ -4,7 +4,7 @@
       "userName": "qa-prod1@gymondo.de",
       "password": "purpleSquid22!",
       "name": "Tester Rahul",
-      "planName": "Fat Burner Beginner",
+      "planName": "Get in Shape Beginner",
       "activeColor": "rgb(255, 127, 102)",
       "apiUpcoming": "https://www.gymondo.com/api/v3/schedules?page=0&size=20&locale=en_US",
       "apiCompleted": "https://www.gymondo.com/api/v3/secured/userresources/fitnessvideos/:done?page=0&size=20&include=content&locale=en_US"

@@ -80,7 +80,7 @@ module.exports = {
 
   async verifyNameOfEnrolledProgram(planName) {
     var currentPlanName = await I.grabTextFrom(this.fields.program_name);
-    assert.strictEqual(currentPlanName, planName);
+    assert(currentPlanName.includes(planName));
   },
 
   async verifyPlanTimelineElements(activeColor) {
