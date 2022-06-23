@@ -67,6 +67,10 @@ module.exports = {
   },
 
   checkWorkoutVideoPlayback() {
+    I.waitForElement(
+      this.fields.workout_video_duration,
+      this.WAIT_IN_SECS_FOR_ELEMENT
+    );
     I.click(this.fields.workout_video_duration);
     I.waitForElement(this.fields.modal_video, this.WAIT_IN_SECS_FOR_ELEMENT);
     I.waitForElement(this.fields.video_player, this.WAIT_IN_SECS_FOR_ELEMENT);
